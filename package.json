@@ -1,0 +1,24 @@
+{
+  "name": "we-pet-cleanarch",
+  "version": "1.0.0",
+  "description": "This project is an improved version of the original we-pet application (https://github.com/CarlosBaixoSI/we-pet);",
+  "main": "index.ts",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CarlosBaixoSI/we-pet-cleanarch.git"
+  },
+  "author": "MEI_G01",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CarlosBaixoSI/we-pet-cleanarch/issues"
+  },
+  "homepage": "https://github.com/CarlosBaixoSI/we-pet-cleanarch#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "helmet": "^7.1.0",
+    "typescript": "^5.3.3"
+  }
+}
