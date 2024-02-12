@@ -43,6 +43,7 @@ export function makeUsersRepository({ db }: Pick<Dependencies, 'db'>): IUsersRep
           birthDate: user.birthDate,
           phoneNumber: user.phoneNumber,
           city: user.city,
+          updatedAt: new Date()
         },
       });
     },

@@ -10,8 +10,8 @@ export async function validate(command: CreateUserCommand) {
             phoneNumber: Yup.string().required().length(9),
             city: Yup.string().required()
         });
-
-        await schema.validate(command, { abortEarly: false, strict: true });
+        
+        await schema.validate(command, { abortEarly: false, strict: false });
     } catch (error) {   
         throw new ValidationException(error as Yup.ValidationError);
     }

@@ -12,6 +12,8 @@ export interface CreateUserCommand {
 
 export function makeCreateUserCommand({ usersRepository }: Pick<Dependencies, 'usersRepository'>) {
   return async function CreateUserCommand(command: CreateUserCommand) {
+    command.birthDate = new Date(command.birthDate);
+
     await validate(command);
 
     const user = new User({
