@@ -1,14 +1,20 @@
 datasource db {
   url      = env("DATABASE_URL")
-  provider = "mongodb"
+  provider = "postgresql"
 }
 
 generator client {
   provider = "prisma-client-js"
+  output = "../../node_modules/.prisma/client"
 }
 
 model User {
-  id  String  @default(auto()) @map("_id") @db.ObjectId @id
+  id    Int      @id @default(autoincrement())
   email String  @unique
   name  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  birthDate DateTime 
+  phoneNumber String
+  city String
 }

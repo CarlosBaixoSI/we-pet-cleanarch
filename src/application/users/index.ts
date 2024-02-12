@@ -1,16 +1,19 @@
 import { Dependencies } from "@infrastructure/di";
+import { makeCreateUserCommand } from "./commands/create-user/create-user-command";
+import { makeGetUsersQuery } from "./queries/get-users/get-users-query";
+import { makeGetUserQuery } from "./queries/get-user/get-user-query";
 
 
-export function makePosts(dependencies: Dependencies) {
+export function makeUsers(dependencies: Dependencies) {
     return {
       commands: {
-        // createPost: makeCreatePostCommand(dependencies),
+        createPost: makeCreateUserCommand(dependencies),
         // deletePost: makeDeletePostCommand(dependencies),
         // updatePost: makeUpdatePostCommand(dependencies),
       },
       queries: {
-        // getPost: makeGetPostQuery(dependencies),
-        // listPosts: makeListPostQuery(dependencies),
+        getUsers: makeGetUsersQuery(dependencies),
+        getUser: makeGetUserQuery(dependencies),
       },
     };
   }
