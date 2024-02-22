@@ -1,1 +1,2 @@
-export * from './userInfo';
+export * from './userInfo'
+export * from './role'

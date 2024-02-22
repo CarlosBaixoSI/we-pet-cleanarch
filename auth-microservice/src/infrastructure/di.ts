@@ -3,10 +3,12 @@ import { asFunction, asValue, Resolver } from 'awilix';
 import * as Interfaces from '@application/common/interfaces';
 import { makeUsersInfoRepository } from './repositories/users-info-repository';
 import { makeLogger } from './logger';
+import { makeRolesRepository } from './repositories/roles-repository';
 
 export type Dependencies = {
   db: PrismaClient;
   usersInfoRepository: Interfaces.IUsersInfoRepository;
+  rolesRepository: Interfaces.IRolesRepository;
   logger: Interfaces.ILogger;
 };
 
@@ -21,6 +23,7 @@ export function makeInfrastructure(): { [dependency in keyof Dependencies]: Reso
     return {
         db: asValue(db),
         usersInfoRepository: asFunction(makeUsersInfoRepository).singleton() as Resolver<Interfaces.IUsersInfoRepository>,
+        rolesRepository: asFunction(makeRolesRepository).singleton() as Resolver<Interfaces.IRolesRepository>,
         logger: asFunction(makeLogger).singleton() as Resolver<Interfaces.ILogger>
     };
 }

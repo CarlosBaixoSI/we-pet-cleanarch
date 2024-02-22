@@ -17,7 +17,7 @@ model UserInfo {
   updatedAt            DateTime    @default(now())
   resetPasswordToken   String?
   resetPasswordExpires DateTime?
-  Role_User            Role_User[]
+  roles            Role[]
 }
 
 model Role {
@@ -26,7 +26,7 @@ model Role {
   description String
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now())
-  Role_User   Role_User[]
+  users       UserInfo[]
 }
 
 model Role_User {
@@ -35,6 +35,4 @@ model Role_User {
   user_id   Int
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-  User      UserInfo @relation(fields: [user_id], references: [id])
-  Role      Role     @relation(fields: [role_id], references: [id])
 }

@@ -2,6 +2,8 @@ import { NotFoundException, ValidationException } from "@application/common/exce
 import { Dependencies } from "@infrastructure/di";
 import bcrypt from 'bcrypt';
 import { validate } from "./sign-in-command-validator";
+import jwt from 'jsonwebtoken';
+
 
 export type SignInCommand = Readonly<{
     email: string;
@@ -27,13 +29,14 @@ export function makeSignInCommand(dependencies: Pick<Dependencies, 'usersInfoRep
         //If it matches, get user role
         //todo implement userRoles repository
         //const roles = dependencies.usersRolesRepository.getRolesByUserId({user.id});
-
+        if(!user.roles || user.roles.length === 0)
+            throw new NotFoundException(`User does not have any role assigned. Please contact the system administrator.`);
         //Generate token
         //todo implement token service
         //const token = dependencies.tokenService.generateToken({userId: user.id, roles});
-
+        const token = jwt.sign({userId: user.id, roles: user.roles}, process.env.JWT_SECRET!, {expiresIn: '1h'});
         //Return user info and token
 
-        return 'token';
+        return {token: token};
     }
 }

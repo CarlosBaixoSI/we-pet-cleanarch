@@ -1,3 +1,5 @@
+import { Role } from "@prisma/client";
+import { Role as RoleEntity } from "@domain/entities";
 export class UserInfo{
     public id?: number;
     public email: string;
@@ -7,11 +9,11 @@ export class UserInfo{
     public createdAt: Date;
     public resetPasswordToken?: string;
     public resetPasswordExpires?: Date;
-
+    public roles?: RoleEntity[];
 /**
  *
  */
-constructor(userInfo: {id?: number, email: string, username: string, password: string, updatedAt: Date, createdAt: Date, resetPasswordToken?: string, resetPasswordExpires?: Date}) {
+constructor(userInfo: {id?: number, email: string, username: string, password: string, updatedAt: Date, createdAt: Date, resetPasswordToken?: string, resetPasswordExpires?: Date, roles?: RoleEntity[]}) {
     this.id = userInfo.id;
     this.email = userInfo.email;
     this.username = userInfo.username;
@@ -20,5 +22,6 @@ constructor(userInfo: {id?: number, email: string, username: string, password: s
     this.createdAt = userInfo.createdAt;
     this.resetPasswordToken = userInfo.resetPasswordToken;
     this.resetPasswordExpires = userInfo.resetPasswordExpires;
+    this.roles = userInfo.roles;
 }   
 }

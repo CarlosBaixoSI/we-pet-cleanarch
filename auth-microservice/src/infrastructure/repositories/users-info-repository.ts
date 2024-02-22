@@ -1,5 +1,5 @@
 import { IUsersInfoRepository } from '@application/common/interfaces';
-import { UserInfo } from '@domain/entities';
+import { UserInfo } from '@domain/entities/userInfo';
 import { Dependencies } from '@infrastructure/di';
 import { UserInfo as UserInfoModel } from '@prisma/client';
 export function makeUsersInfoRepository({ db }: Pick<Dependencies, 'db'>): IUsersInfoRepository {
@@ -14,6 +14,14 @@ export function makeUsersInfoRepository({ db }: Pick<Dependencies, 'db'>): IUser
           updatedAt: new Date(),
           resetPasswordExpires: null,
           resetPasswordToken: null,
+          roles: {
+            connectOrCreate: userInfo.roles?.map((role) => {
+                return {
+                    where: { name: role.name },
+                    create: { name: role.name, description: role.description, createdAt: new Date(), updatedAt: new Date()},
+                };
+            }),
+        },
         },
       });
 
@@ -45,20 +53,21 @@ export function makeUsersInfoRepository({ db }: Pick<Dependencies, 'db'>): IUser
     },
 
     async getByEmail({email}){
-      const userInfo = await db.userInfo.findFirst({ where: { email } });
+      const userInfo = await db.userInfo.findFirst({ where: { email }, include: {roles: true} });
       if (!userInfo) return null;
       return toEntity(userInfo);
     }
   };
 
-  function toEntity(user: UserInfoModel) {
+  function toEntity(user: any, roles: any[] = []) {
     return new UserInfo({
       email: user.email,
       username: user.username,
       password: user.password,
       id: user.id,
       createdAt: user.createdAt,
-      updatedAt: user.updatedAt
+      updatedAt: user.updatedAt,
+      roles: user.roles.map((role: any) => ({name: role.name, description: role.description, id: role.id, createdAt: role.createdAt, updatedAt: role.updatedAt}))
     });
   }
 }
