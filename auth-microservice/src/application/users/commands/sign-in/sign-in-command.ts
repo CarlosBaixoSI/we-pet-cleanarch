@@ -25,15 +25,9 @@ export function makeSignInCommand(dependencies: Pick<Dependencies, 'usersInfoRep
         //If it does not match, throw an exception
         if(!doesPasswordMatch)
             throw new ValidationException(`It was impossible to sign in with the provided credentials. Verify if the username and password are correct.`);
-
-        //If it matches, get user role
-        //todo implement userRoles repository
-        //const roles = dependencies.usersRolesRepository.getRolesByUserId({user.id});
         if(!user.roles || user.roles.length === 0)
             throw new NotFoundException(`User does not have any role assigned. Please contact the system administrator.`);
-        //Generate token
-        //todo implement token service
-        //const token = dependencies.tokenService.generateToken({userId: user.id, roles});
+
         const token = jwt.sign({userId: user.id, roles: user.roles}, process.env.JWT_SECRET!, {expiresIn: '1h'});
         //Return user info and token
 

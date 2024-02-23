@@ -67,7 +67,7 @@ export function makeUsersInfoRepository({ db }: Pick<Dependencies, 'db'>): IUser
       id: user.id,
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
-      roles: user.roles.map((role: any) => ({name: role.name, description: role.description, id: role.id, createdAt: role.createdAt, updatedAt: role.updatedAt}))
+      roles: user.roles?.map((role: any) => ({name: role.name, description: role.description, id: role.id, createdAt: role.createdAt, updatedAt: role.updatedAt}))
     });
   }
 }

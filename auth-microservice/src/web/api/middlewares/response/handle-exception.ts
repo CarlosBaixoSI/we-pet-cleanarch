@@ -21,6 +21,8 @@ export function makeHandleException({ logger }: Pick<Dependencies, 'logger'>) {
       case Exceptions.ValidationException:
         exception = validationExceptionResponse(error as Exceptions.ValidationException);
         break;
+      case Exceptions.UnauthorizedException:
+        exception = unauthorizedExceptionResponse(error as Exceptions.UnauthorizedException);
       default:
         exception = internalServerException();
     }
@@ -58,5 +60,14 @@ function validationExceptionResponse(error: Exceptions.ValidationException): Exc
     status: 400,
     title: 'The request was invalid',
     type: 'https://tools.ietf.org/html/rfc7231#section-6.5.1',
+  };
+}
+
+function unauthorizedExceptionResponse(error: Exceptions.UnauthorizedException): ExceptionResponse {
+  return {
+    ...(error.message && { detail: error.message }),
+    status: 401,
+    title: 'Unauthorized',
+    type: 'https://tools.ietf.org/html/rfc7235#section-3.1',
   };
 }
