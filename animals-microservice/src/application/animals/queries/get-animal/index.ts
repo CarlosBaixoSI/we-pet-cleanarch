@@ -1,1 +1,1 @@
-export * from '.'
+export * from './get-animal-query'
