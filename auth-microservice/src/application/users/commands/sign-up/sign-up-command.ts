@@ -9,12 +9,12 @@ export type SignUpCommand = Readonly<{
     email: string;
     password: string;
 }>;
-export function makeSignUpCommand(dependencies: Pick<Dependencies, 'usersInfoRepository' | 'rolesRepository'>, applicationDependencies: Pick<ApplicationDependencies, 'passwordManagementService'>) {
+export function makeSignUpCommand(dependencies: Pick<Dependencies, 'usersInfoRepository' | 'rolesRepository' | 'passwordHasher'>) {
     return async function signUpCommand(command: SignUpCommand) {
         await validate(command);
         
         //todo hash password 
-        const hashedPassword = await bcrypt.hash(command.password, 10);
+        const hashedPassword = await dependencies.passwordHasher.hashPassword(command.password);
 
         const roles = await dependencies.rolesRepository.getAll();
 

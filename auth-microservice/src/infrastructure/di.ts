@@ -4,12 +4,14 @@ import * as Interfaces from '@application/common/interfaces';
 import { makeUsersInfoRepository } from './repositories/users-info-repository';
 import { makeLogger } from './logger';
 import { makeRolesRepository } from './repositories/roles-repository';
+import { makePasswordHasher } from './services/passwordHasher';
 
 export type Dependencies = {
   db: PrismaClient;
   usersInfoRepository: Interfaces.IUsersInfoRepository;
   rolesRepository: Interfaces.IRolesRepository;
   logger: Interfaces.ILogger;
+  passwordHasher: Interfaces.IPasswordHasher;
 };
 
 export function makeInfrastructure(): { [dependency in keyof Dependencies]: Resolver<Dependencies[dependency]> } {
@@ -24,6 +26,7 @@ export function makeInfrastructure(): { [dependency in keyof Dependencies]: Reso
         db: asValue(db),
         usersInfoRepository: asFunction(makeUsersInfoRepository).singleton() as Resolver<Interfaces.IUsersInfoRepository>,
         rolesRepository: asFunction(makeRolesRepository).singleton() as Resolver<Interfaces.IRolesRepository>,
-        logger: asFunction(makeLogger).singleton() as Resolver<Interfaces.ILogger>
+        logger: asFunction(makeLogger).singleton() as Resolver<Interfaces.ILogger>,
+        passwordHasher: asFunction(makePasswordHasher).singleton() as Resolver<Interfaces.IPasswordHasher>,
     };
 }

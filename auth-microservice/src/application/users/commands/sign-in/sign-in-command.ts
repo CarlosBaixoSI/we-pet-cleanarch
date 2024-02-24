@@ -10,7 +10,7 @@ export type SignInCommand = Readonly<{
     password: string;
   }>;
 
-export function makeSignInCommand(dependencies: Pick<Dependencies, 'usersInfoRepository'>){
+export function makeSignInCommand(dependencies: Pick<Dependencies, 'usersInfoRepository' | 'passwordHasher'>){
     return async function signInCommand(command : SignInCommand){
 
         await validate(command);
@@ -21,7 +21,7 @@ export function makeSignInCommand(dependencies: Pick<Dependencies, 'usersInfoRep
             throw new ValidationException(`It was impossible to sign in with the provided credentials. Verify if the username and password are correct.`);
   
         //Check if password matches
-        const doesPasswordMatch = await bcrypt.compare(password, user.password);
+        const doesPasswordMatch = await dependencies.passwordHasher.comparePasswords(password, user.password);
         //If it does not match, throw an exception
         if(!doesPasswordMatch)
             throw new ValidationException(`It was impossible to sign in with the provided credentials. Verify if the username and password are correct.`);
